@@ -1,0 +1,17 @@
+{
+  "name": "wanderlust-1",
+  "version": "1.0.0",
+  "description": "This is Part-1 of my project . In this part I've created all my hotels and buildings listings including thier data and locations and price and much more.Wanderlust is an airbnb type of website in which we can",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongoose": "^8.1.1"
+  }
+}
