@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust</title>
+</head>
+<body>
+    <h3>Edit Listing</h3>
+    <form action="/Listings/<%=listing._id%>?_method=PUT" method="post">
+ <input type="text" name="listing[title]" id="" value="<%=listing.title%>">
+ <!-- here we're are making all variable as a key of object [listing] so listing object key will be title,description etc.. -->
+ <br>
+ <br>
+ <textarea type="text" name="listing[description]" id="" value="<%=listing.description%>"></textarea>
+ <br>
+ <br>
+ <input type="text" name="listing[image]" id="" value="<%=listing.image%>">
+ <br>
+ <br>
+ <input type="number" name="listing[price]" id="" value="<%=listing.price%>">
+ <br>
+ <br>
+ <input type="text" name="listing[location]" id="" value="<%=listing.location%>">
+ <br>
+ <br>
+ <input type="text" name="listing[country]" id="" value="<%=listing.country%>">
+ <br>
+ <br>
+ <button>Edit</button>
+    </form>
+</body>
+</html>

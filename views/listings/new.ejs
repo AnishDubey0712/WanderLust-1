@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust</title>
+</head>
+<body>
+    <h3>Create New Listing</h3>
+    <form action="/Listings" method="post">
+ <input type="text" name="listing[title]" id="" placeholder="Enter your title">
+ <!-- here we're are making all variable as a key of object [listing] so listing object key will be title,description etc.. -->
+ <br>
+ <br>
+ <textarea type="text" name="listing[description]" id="" placeholder="Enter your description"></textarea>
+ <br>
+ <br>
+ <input type="text" name="listing[image]" id="" placeholder="Enter your image url">
+ <br>
+ <br>
+ <input type="number" name="listing[price]" id="" placeholder="Enter your price">
+ <br>
+ <br>
+ <input type="text" name="listing[location]" id="" placeholder="Enter your location">
+ <br>
+ <br>
+ <input type="text" name="listing[country]" id="" placeholder="Enter your country">
+ <br>
+ <br>
+ <button>Add</button>
+    </form>
+</body>
+</html>
