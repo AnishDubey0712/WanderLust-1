@@ -1,8 +1,9 @@
+<!-- Index.ejs file is made for rendering our all listings and to create new listing button within it -->
 <%layout("/layouts/boilerplate")%>
 <body>
     <h3>All Listings</h3>
-    <form action="/Listings/new" method="get">
-        <button>Create new listing</button>
+    <!-- <form action="/Listings/new" method="get">
+        <button>Create new listing</button> -->
     </form>
     <ul>
        <% for(let Listing of allListings){%>

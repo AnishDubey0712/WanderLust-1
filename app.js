@@ -11,6 +11,7 @@ app.set("views",path.join(__dirname,"views")); // for ejs
 app.use(express.urlencoded({extended:true}));// for Data parsing
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
+app.use(express.static(path.join(__dirname,"/public")));
 
 
 app.listen(8080,()=>{
@@ -67,6 +68,7 @@ app.put("/Listings/:id",async (req,res)=>{
     await Listing.findByIdAndUpdate(id,{...req.body.listing}) //req.body.listing is our JS object in which there are all parameters and we'll deconstruct it and we'll convert them into individual value and pass it in new updated value
   res.redirect("/Listings");
 });
+// Delete Route
 app.delete("/Listings/:id", async (req,res)=>{
     let {id}= req.params;
     let dltListing = await Listing.findByIdAndDelete(id)

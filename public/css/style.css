@@ -1,0 +1,36 @@
+.navbar{
+    height: 5rem;
+    background-color: white;
+}
+.fa-solid {
+    color: #fe424d;
+    font-size: 2rem;
+}
+.nav-link{
+    color: black !important;
+}
+/* Footer */
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+}
+.f-info-links a:hover {
+    text-decoration: underline;
+    color: #222222;
+}
+.f-info-links {
+    width: 100%;
+     /* display: flex; */
+}
+.f-info-socials {
+    width: 100%;
+}
+.f-info {
+    display: flex;
+    height: 8rem;
+    background-color: #ebebeb;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+    text-align: center;
+}
