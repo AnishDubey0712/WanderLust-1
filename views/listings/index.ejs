@@ -3,8 +3,16 @@
 <body>
     <h3>All Listings</h3>
     <!-- <form action="/Listings/new" method="get">
-        <button>Create new listing</button> -->
-    </form>
+        <button>Create new listing</button> 
+    </form>-->
+    <% for(let Listing of allListings){%>
+    <div class="card" style="width: 18rem;">
+        <img src="<%=Listing.image.url%>" class="card-img-top" alt="listingimage">
+        <div class="card-body">
+          <p class="card-text"><%=Listing.title%> <br>&#8377;<%=Listing.price.toLocaleString("en-IN")%> /night</p>
+        </div>
+      </div>
+      <%}%>
     <ul>
        <% for(let Listing of allListings){%>
             <li><a href="/Listings/<%=Listing.id%>"><%=Listing.title%></a></li>
