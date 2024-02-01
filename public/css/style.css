@@ -1,3 +1,14 @@
+body {
+    /* font-family: 'Montserrat', sans-serif; */
+font-family: 'Plus Jakarta Sans', sans-serif !important;
+display: flex;
+flex-direction: column;
+min-height: 100vh;
+/* font-family: 'Poppins', sans-serif !important; */
+}
+.container {
+    flex: 1;
+}
 .navbar{
     height: 5rem;
     background-color: white;
@@ -37,4 +48,34 @@
     justify-content: center;
     align-items: space-evenly;
     text-align: center;
+}
+/* Cards */
+.card{
+    border: none !important;
+    margin-bottom: 2rem;
+}
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+.card-body {
+    padding: 0;
+}
+/* To remove underline from anchor tag of card */
+.listing_link {
+    text-decoration: none;
+}
+/* Card Overlay */
+.card-img-overlay {
+    opacity: 0;
+}
+.card-img-overlay:hover {
+    opacity: 0.2;
+    background-color: #ebebeb;
+}
+/* New listing page */
+.add-btn {
+    background-color: #fe424d !important;
+    border: none !important;
 }
