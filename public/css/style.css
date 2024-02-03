@@ -92,6 +92,15 @@ height: 30vh;
     display: flex;
 }
 .custom-edit-btn {
-    height: 40px;
+    height: 37.6px;
+    width: 76.55px;
+   
+}
+.show-card {
+    padding-left: 0;
+    padding-right: 0;
+}
+.card-body {
+   width: 550px;
    
 }
