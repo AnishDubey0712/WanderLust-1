@@ -51,14 +51,17 @@ app.post("/Listings",async(req,res)=>{
     //Here we've converted JS object to our new Listing and so it will add as new Listing into Db
      let newlisting =  new Listing (req.body.listing) ;
      await newlisting.save(); // here we'll save our newlisting data in db
+     console.log(newlisting);
      res.redirect("/Listings");
 });
 
 //Edit Route
 app.get("/Listings/:id/edit", async(req,res)=>{
     let {id} = req.params; // here we got id now we find data by using id
-    const listing = await Listing.findById(id);// here listing is object which is finding From Listing DB schema
-res.render("listings/edit.ejs",{listing});
+    const listing = await Listing.findById(id);
+    console.log("Listing Object:", listing);
+// here listing is object which is finding From Listing DB schema
+res.render("listings/edit.ejs",{ listing });
 //we'll get our id from req and then we'll find that particular listing by id and then pass it to edit.ejs
 });
 
