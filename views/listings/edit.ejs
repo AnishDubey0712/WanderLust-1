@@ -7,14 +7,14 @@
     <form action="/Listings/<%=listing._id%>?_method=PUT" method="post">
         <div class="mb-3">
             <label for="title"class="form-label">Title</label> 
-            <input type="text" name="listing[title]" id="" value="<%=listing.title%>" class="form-control">
+            <input type="text" name="listing[title]" id="" value="<%=listing.title%>" class="form-control" required>
         </div>
 
  <!-- here we're are making all variable as a key of object [listing] so listing object key will be title,description etc.. -->
  
  <div class="mb-3">
     <label for="description"class="form-label">Description</label>
-    <textarea type="text" name="listing[description]" id="" value="<%=listing.description%>" class="form-control"></textarea>
+    <textarea type="text" name="listing[description]" id="" value="<%=listing.description%>" class="form-control" required>  </textarea>
  
  </div>
  
@@ -26,19 +26,19 @@
  <div class="row mt-3">
     <div class="mb-3 col-md-4">
     <label for="price"class="form-label">Price</label>
-     <input type="number" name="listing[price]" id="" value="<%=listing.price%>" class="form-control">
+     <input type="number" name="listing[price]" id="" value="<%=listing.price%>" class="form-control" required>
  </div>
 
  <div class="mb-3 col-md-8">
     <label for="loction"class="form-label">Location</label>
-    <input type="text" name="listing[location]" id="" value="<%=listing.location%>"class="form-control">
+    <input type="text" name="listing[location]" id="" value="<%=listing.location%>"class="form-control" required>
  </div>
  </div>
  
  
  <div class="mb-2">
     <label for="country"class="form-label">Country</label>
-<input type="text" name="listing[country]" id="" value="<%=listing.country%>" class="form-control">
+<input type="text" name="listing[country]" id="" value="<%=listing.country%>" class="form-control" required>
  </div> 
  
  <button class="btn btn-dark edit-btn mb-3 mt-2">Edit</button> 
