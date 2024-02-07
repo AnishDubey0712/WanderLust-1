@@ -5,14 +5,16 @@
     <div class="col-8 offset-2"> 
     <h3>Create New Listing</h3>
     <!-- here we've used bootstrap form overview and made separate div for sections and mb-3 is bootstrap class for spacing -->
-    <form action="/Listings" method="post">
+    <form action="/Listings" method="post" novalidate class="needs-validation">
         <div class="mb-3">  
             <label for="title"class="form-label">Title</label>
    <input type="text" 
    name="listing[title]" 
    id="" 
    placeholder="Enter your title"
-   class="form-control">
+   class="form-control" required>
+<!-- This valid-feedback is bootstrapclass which will show feedback msg after we enter title and click on add btn it will reflect custom validation msg added by ourside -->
+   <div class="valid-feedback">Amazing title!</div>
         </div>
         <div class="mb-3">
             <label for="description"class="form-label">Description</label>
@@ -20,12 +22,13 @@
             name="listing[description]" 
             id=""
             class="form-control"
-            ></textarea>
+            required></textarea>
+            <div class="invalid-feedback">Enter short description</div>
         </div>
         <div class="mb-3">
             <label for="image"class="form-label">Image URL</label>
             <input type="text" name="listing[image]" id="" placeholder="Enter your image url"
-            class="form-control">
+            class="form-control" >
             </div>
         
  <!-- here we're are making all variable as a key of object [listing] so listing object key will be title,description etc.. -->
@@ -33,20 +36,27 @@
  <div class="row">
     <div class="mb-3 col-md-4">
     <label for="price"class="form-label">Price</label>
-     <input type="number" name="listing[price]" id="" placeholder="Enter your price" class="form-control">
+     <input type="number" 
+     name="listing[price]"
+      id="" 
+      placeholder="Enter your price" 
+      class="form-control" required>
+      <div class="invalid-feedback">Enter Valid Price</div>
  </div>
  
  <div class="mb-3 col-md-8">
     <label for="location"class="form-label">Location</label>
-    <input type="text" name="listing[location]" id="" placeholder="Enter your location" class="form-control">
- </div>
+    <input type="text" name="listing[location]" id="" placeholder="Enter your location" class="form-control" required>
+    <div class="invalid-feedback">Enter Location</div>
+</div>
 
  </div>
  
  <div class="mb-3">
     <label for="country"class="form-label">Country</label>
-     <input type="text" name="listing[country]" id="" placeholder="Enter your country"class="form-control">
- </div>
+     <input type="text" name="listing[country]" id="" placeholder="Enter your country"class="form-control" required>
+     <div class="invalid-feedback">Enter Valid Country Name</div>
+    </div>
  <button class="btn btn-dark add-btn mt-3">Add</button> <br><br>
     </form>
 </div>
