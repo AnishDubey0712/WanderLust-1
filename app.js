@@ -34,6 +34,16 @@ async function main(){
     await mongoose.connect(MONGO_URL);
 };
 
+const validateListing = (req,res,next)=>{
+      let {error} = ListingSchema.validate(req.body);//validating joi and checking all parameters
+    if(error){
+        throw new ExpressError(404,error);
+    }
+    else{
+        next();
+    }
+}
+
 // Define a route handler for the root URL
 app.get("/", (req, res) => {
     // Redirect to the Listings page or any other page you want
@@ -60,10 +70,7 @@ app.get("/Listings/:id",wrapAsync(async (req,res)=>{
 }));
 
 //Create Route (Post req for new listings)
-app.post("/Listings",wrapAsync(async(req,res,next)=>{
-    let result = ListingSchema.validate(req.body);//validating joi and checking all parameters
-    console.log(result); 
-
+app.post("/Listings",validateListing,wrapAsync(async(req,res,next)=>{
     //Here we've converted JS object to our new Listing and so it will add as new Listing into Db
      const newlisting =  new Listing (req.body.listing) ;
      await newlisting.save(); // here we'll save our newlisting data in db
@@ -82,10 +89,7 @@ res.render("listings/edit.ejs",{ listing });
 }));
 
 //Update Route
-app.put("/Listings/:id",wrapAsync(async (req,res)=>{
-    if(!req.body.listing){
-        throw new ExpressError(404,"Send valid data for Listings")
-    }
+app.put("/Listings/:id",validateListing,wrapAsync(async (req,res)=>{
     let {id}= req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing}) //req.body.listing is our JS object in which there are all parameters and we'll deconstruct it and we'll convert them into individual value and pass it in new updated value
   res.redirect("/Listings");
