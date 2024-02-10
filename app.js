@@ -6,7 +6,8 @@ const path = require("path")//setting up ejs
 const methodOverride = require("method-override");//for converting post req into put for updation
 const ejsMate = require("ejs-mate");//its used to keep things common in webpages
 const wrapAsync = require("./utils/wrapAsync.js");
-const ExpressError = require("./utils/ExpressError.js")
+const ExpressError = require("./utils/ExpressError.js");
+const {ListingSchema} = require("./schema.js")
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views")); // for ejs
@@ -60,13 +61,13 @@ app.get("/Listings/:id",wrapAsync(async (req,res)=>{
 
 //Create Route (Post req for new listings)
 app.post("/Listings",wrapAsync(async(req,res,next)=>{
-    if(!req.body.listing){
-        throw new ExpressError(404,"Send valid data for Listings")
-    }
+    let result = ListingSchema.validate(req.body);//validating joi and checking all parameters
+    console.log(result); 
+
     //Here we've converted JS object to our new Listing and so it will add as new Listing into Db
      const newlisting =  new Listing (req.body.listing) ;
      await newlisting.save(); // here we'll save our newlisting data in db
-    //  console.log(newlisting);
+    
      res.redirect("/Listings");
 }));
 
@@ -107,7 +108,7 @@ next(new ExpressError(404,"Page not found!"));
 app.use((err,req,res,next)=>{
 //we've set default statusCode & message if err does not have its own status code then it will send default msg & statuscode
 let {statusCode=500,message="Something went wrong!"} = err;//Here we'll deconstruct our code to err
- res.render("error.ejs")
+ res.status(statusCode).render("error.ejs",{message})
 //then we'll set our status to statuscode and send our message
 // res.status(statusCode).send(message);
 //To handle error
