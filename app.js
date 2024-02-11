@@ -33,6 +33,11 @@ main().then(()=>{
 async function main(){
     await mongoose.connect(MONGO_URL);
 };
+// validateListing, 
+//this middleware ensures that the data received in the request body conforms to the expected structure and validation rules defined by the ListingSchema. 
+//If there's an error, it halts further processing and sends an appropriate error response.
+// Otherwise, it allows the request to proceed to the next middleware or route handler.
+//Basically , one middleware for create and update api routes
 
 const validateListing = (req,res,next)=>{
       let {error} = ListingSchema.validate(req.body);//validating joi and checking all parameters
