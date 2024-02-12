@@ -16,7 +16,7 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
-//
+
 
 
 
@@ -45,7 +45,7 @@ const validateListing = (req,res,next)=>{
         throw new ExpressError(404,error);
     }
     else{
-        next();
+        next(); // If there is no error detected then will call next function
     }
 }
 
