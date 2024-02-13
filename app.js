@@ -42,7 +42,7 @@ async function main(){
 const validateListing = (req,res,next)=>{
       let {error} = ListingSchema.validate(req.body);//validating joi and checking all parameters
     if(error){
-        throw new ExpressError(404,error);
+        throw new ExpressError(404,error);// express error will send new error according to what we have mentioned in our expresserror.js file
     }
     else{
         next(); // If there is no error detected then will call next function
