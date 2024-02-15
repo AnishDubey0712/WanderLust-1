@@ -19,6 +19,12 @@ const listingSchema=new Schema({
     price: Number,
     location : String,
     country: String,
+    reviews: [
+      {
+        type : Schema.Types.ObjectId, //All reviews to our perticular hotel and thier objectId will get stored in this array
+        ref : "Review" //we will use review model as ref.
+      }
+    ]
 });
 const Listing = mongoose.model("Listing",listingSchema);
 module.exports= Listing;

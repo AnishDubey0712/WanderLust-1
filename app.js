@@ -107,6 +107,7 @@ app.delete("/Listings/:id", wrapAsync(async (req,res)=>{
 }));
 
 //We've added wrapSync func to all req so if some error occurs we'll handle it and our server won't get crash
+
 //Errors
 app.all("*",(req,res,next)=>{
 //This route is for page not found err if someone send req to wrong page or path it will show page not found
