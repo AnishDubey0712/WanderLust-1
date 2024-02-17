@@ -5,9 +5,10 @@ const Listing = require("./models/listing.js");
 const path = require("path")//setting up ejs
 const methodOverride = require("method-override");//for converting post req into put for updation
 const ejsMate = require("ejs-mate");//its used to keep things common in webpages
-const wrapAsync = require("./utils/wrapAsync.js");
+const wrapAsync = require("./utils/wrapAsync.js");//for err handling and easy way to write try&catch
 const ExpressError = require("./utils/ExpressError.js");
-const {ListingSchema} = require("./schema.js")
+const {ListingSchema} = require("./schema.js");
+const Review = require("./models/review.js");
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views")); // for ejs
@@ -99,12 +100,23 @@ app.put("/Listings/:id",validateListing,wrapAsync(async (req,res)=>{
     await Listing.findByIdAndUpdate(id,{...req.body.listing}) //req.body.listing is our JS object in which there are all parameters and we'll deconstruct it and we'll convert them into individual value and pass it in new updated value
   res.redirect("/Listings");
 }));
-// Delete Route
+// Delete Route 
 app.delete("/Listings/:id", wrapAsync(async (req,res)=>{
     let {id}= req.params;
     let dltListing = await Listing.findByIdAndDelete(id);//We will first find our listing by id and then delete it.
  res.redirect("/Listings");
 }));
+
+//Reviews Route(Post route)
+app.post("/Listings/:id/reviews",async(req,res)=>{
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);// we take review from req body and add it as new review in schema model
+    listing.reviews.push(newReview); // ad we will push that into our reviews model
+    await newReview.save();//we will save it to our db
+    await listing.save(); 
+    console.log("Saved");
+    res.send("Saved")
+})
 
 //We've added wrapSync func to all req so if some error occurs we'll handle it and our server won't get crash
 
