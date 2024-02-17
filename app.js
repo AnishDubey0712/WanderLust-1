@@ -7,7 +7,7 @@ const methodOverride = require("method-override");//for converting post req into
 const ejsMate = require("ejs-mate");//its used to keep things common in webpages
 const wrapAsync = require("./utils/wrapAsync.js");//for err handling and easy way to write try&catch
 const ExpressError = require("./utils/ExpressError.js");
-const {ListingSchema} = require("./schema.js");
+const {ListingSchema,reviewSchema} = require("./schema.js");//both are required Listing & Review Schema
 const Review = require("./models/review.js");
 
 app.set("view engine","ejs");
@@ -49,6 +49,16 @@ const validateListing = (req,res,next)=>{
         next(); // If there is no error detected then will call next function
     }
 }
+//For review Error handling
+const validateReview = (req,res,next)=>{
+    let {error} = reviewSchema.validate(req.body);//validating joi and checking all parameters
+  if(error){
+      throw new ExpressError(404,error);// express error will send new error according to what we have mentioned in our expresserror.js file
+  }
+  else{
+      next(); // If there is no error detected then will call next function
+  }
+}
 
 // Define a route handler for the root URL
 app.get("/", (req, res) => {
@@ -71,7 +81,8 @@ app.get("/Listings/new",(req,res)=>{
 // Show Route
 app.get("/Listings/:id",wrapAsync(async (req,res)=>{
     let {id} = req.params; // here we got id now we find data by using id
-    const listing = await Listing.findById(id);// here listing is object which is finding From Listing DB schema
+    const listing = await Listing.findById(id).populate("reviews");// here listing is object which is finding From Listing DB schema
+   //To get data along with object id we use populate method
     res.render("listings/show.ejs",{listing});
 }));
 
@@ -108,15 +119,16 @@ app.delete("/Listings/:id", wrapAsync(async (req,res)=>{
 }));
 
 //Reviews Route(Post route)
-app.post("/Listings/:id/reviews",async(req,res)=>{
+app.post("/Listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
+    //Here both are used validateReview for review err handling and wrapAsync for basic err handling
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);// we take review from req body and add it as new review in schema model
     listing.reviews.push(newReview); // ad we will push that into our reviews model
     await newReview.save();//we will save it to our db
     await listing.save(); 
     console.log("Saved");
-    res.send("Saved")
-})
+    res.redirect(`/Listings/${listing._id}`);
+}))
 
 //We've added wrapSync func to all req so if some error occurs we'll handle it and our server won't get crash
 

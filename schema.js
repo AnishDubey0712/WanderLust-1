@@ -14,3 +14,11 @@ listing: Joi.object({
     image: Joi.string().allow("",null),
 }).required(), //According to joi this object should be required means at every req in that there should be listing object
 }); 
+
+//joi package for review schema
+module.exports.reviewSchema = Joi.object({
+    review: Joi.object({
+       rating: Joi.number().required().min(1).max(5),
+        comment: Joi.string().required(),
+    }).required(),
+});

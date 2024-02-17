@@ -49,7 +49,8 @@ min-height: 100vh !important;
     text-align: center;
 }
 /* Cards */
-.card{
+
+.listing-card{
     border: none !important;
     margin-bottom: 2rem;
 }
