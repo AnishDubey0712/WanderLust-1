@@ -9,6 +9,7 @@ const wrapAsync = require("./utils/wrapAsync.js");//for err handling and easy wa
 const ExpressError = require("./utils/ExpressError.js");
 const {ListingSchema,reviewSchema} = require("./schema.js");//both are required Listing & Review Schema
 const Review = require("./models/review.js");
+const listings = require("./routes/listing.js"); //required our listing.js in which er are using router
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views")); // for ejs
@@ -34,21 +35,7 @@ main().then(()=>{
 async function main(){
     await mongoose.connect(MONGO_URL);
 };
-// validateListing, 
-//this middleware ensures that the data received in the request body conforms to the expected structure and validation rules defined by the ListingSchema. 
-//If there's an error, it halts further processing and sends an appropriate error response.
-// Otherwise, it allows the request to proceed to the next middleware or route handler.
-//Basically , one middleware for create and update api routes
 
-const validateListing = (req,res,next)=>{
-      let {error} = ListingSchema.validate(req.body);//validating joi and checking all parameters
-    if(error){
-        throw new ExpressError(404,error);// express error will send new error according to what we have mentioned in our expresserror.js file
-    }
-    else{
-        next(); // If there is no error detected then will call next function
-    }
-}
 //For review Error handling
 const validateReview = (req,res,next)=>{
     let {error} = reviewSchema.validate(req.body);//validating joi and checking all parameters
@@ -66,57 +53,7 @@ app.get("/", (req, res) => {
     res.redirect("/Listings");
 });
 
-
-//Index route
-app.get("/Listings",wrapAsync(async (req,res)=>{
-const allListings = await Listing.find({});
-   res.render("listings/index.ejs",{allListings})
-}));
-
-//New Route (get req for new listings then it send post req from new.ejs  )
-app.get("/Listings/new",(req,res)=>{
-    res.render("listings/new.ejs");
-})
-
-// Show Route
-app.get("/Listings/:id",wrapAsync(async (req,res)=>{
-    let {id} = req.params; // here we got id now we find data by using id
-    const listing = await Listing.findById(id).populate("reviews");// here listing is object which is finding From Listing DB schema
-   //To get data along with object id we use populate method
-    res.render("listings/show.ejs",{listing});
-}));
-
-//Create Route (Post req for new listings)
-app.post("/Listings",validateListing,wrapAsync(async(req,res,next)=>{
-    //Here we've converted JS object to our new Listing and so it will add as new Listing into Db
-     const newlisting =  new Listing (req.body.listing) ;
-     await newlisting.save(); // here we'll save our newlisting data in db
-    
-     res.redirect("/Listings");
-}));
-
-//Edit Route
-app.get("/Listings/:id/edit",wrapAsync( async(req,res)=>{
-    let {id} = req.params; // here we got id now we find data by using id
-    const listing = await Listing.findById(id);
-    console.log("Listing Object:", listing);
-// here listing is object which is finding From Listing DB schema
-res.render("listings/edit.ejs",{ listing });
-//we'll get our id from req and then we'll find that particular listing by id and then pass it to edit.ejs
-}));
-
-//Update Route
-app.put("/Listings/:id",validateListing,wrapAsync(async (req,res)=>{
-    let {id}= req.params;
-    await Listing.findByIdAndUpdate(id,{...req.body.listing}) //req.body.listing is our JS object in which there are all parameters and we'll deconstruct it and we'll convert them into individual value and pass it in new updated value
-  res.redirect("/Listings");
-}));
-// Delete Route 
-app.delete("/Listings/:id", wrapAsync(async (req,res)=>{
-    let {id}= req.params;
-    let dltListing = await Listing.findByIdAndDelete(id);//We will first find our listing by id and then delete it.
- res.redirect("/Listings");
-}));
+app.use("/Listings",listings)
 
 //Reviews Route(Post route)
 app.post("/Listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
@@ -126,8 +63,16 @@ app.post("/Listings/:id/reviews",validateReview,wrapAsync(async(req,res)=>{
     listing.reviews.push(newReview); // ad we will push that into our reviews model
     await newReview.save();//we will save it to our db
     await listing.save(); 
-    console.log("Saved");
     res.redirect(`/Listings/${listing._id}`);
+}));
+
+//Delete Reviews Route
+app.delete("/Listings/:id/reviews/:reviewId",wrapAsync(async(req,res)=>{
+   let{id , reviewId} = req.params;
+   await Listing.findByIdAndUpdate(id,{$pull: {reviews : reviewId}});
+   //we've used pull operator of Mongodb.So, we've passed our id then from reviews array any id get matched with our passed id we'll pull it and remove it.
+   await Review.findByIdAndDelete(reviewId);//by pulling our reviewId here we'll delete it
+   res.redirect(`/Listings/${id}`);
 }))
 
 //We've added wrapSync func to all req so if some error occurs we'll handle it and our server won't get crash

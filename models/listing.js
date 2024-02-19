@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const review = require("./review.js")
 
 const listingSchema=new Schema({
     title :{type:String,
@@ -25,6 +26,11 @@ const listingSchema=new Schema({
         ref : "Review" //we will use review model as ref.
       }
     ]
+});
+//This post middleware will call after delete reviews will get called
+listingSchema.post("findOneAndDelete",async(Listing)=>{
+  if(Listing){
+await review.deleteMany({_id:{ $in: Listing.reviews}})};//this will delete all corresponding reviews to that listing
 });
 const Listing = mongoose.model("Listing",listingSchema);
 module.exports= Listing;
