@@ -6,7 +6,9 @@ const methodOverride = require("method-override");//for converting post req into
 const ejsMate = require("ejs-mate");//its used to keep things common in webpages
 const ExpressError = require("./utils/ExpressError.js");
 const listings = require("./routes/listing.js"); //required our listing.js in which er are using router
-const reviews = require("./routes/review.js")
+const reviews = require("./routes/review.js");
+const session = require("express-session");//To make session_id for client
+const flash = require("connect-flash");//To flash messages
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views")); // for ejs
 app.use(express.urlencoded({extended:true}));// for Data parsing
@@ -16,6 +18,16 @@ app.use(express.static(path.join(__dirname,"/public")));
 
 
 
+const sessionOptions = {
+    secret : "mysupersecretcode",
+    resave : false,
+    saveUninitialized : true,
+    cookie: {
+        expires : Date.now()+7*24*60*60*1000,
+        maxAge : 7*24*60*60*1000 ,
+        httpOnly: true,
+    },
+};
 
 
 app.listen(8080,()=>{
@@ -48,9 +60,17 @@ app.get("/", (req, res) => {
     // Redirect to the Listings page or any other page you want
     res.redirect("/Listings");
 });
-
+//We have to use both flash and session before our api routes
+app.use(session(sessionOptions));
+app.use(flash());
+app.use((req,res,next)=>{
+    res.locals.success=req.flash("success");//Whenever we get success message then we'll call next
+    //And we're gonna use this success variable in our index.ejs cuz its redirecting to listings
+    next();
+});
 app.use("/Listings",listings)
-app.use("/Listings/:id/reviews",reviews)
+app.use("/Listings/:id/reviews",reviews);
+
 
 
 //We've added wrapSync func to all req so if some error occurs we'll handle it and our server won't get crash
