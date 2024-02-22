@@ -26,6 +26,7 @@ router.post("/",validateReview,wrapAsync(async(req,res)=>{
     listing.reviews.push(newReview); // ad we will push that into our reviews model
     await newReview.save();//we will save it to our db
     await listing.save(); 
+    req.flash("success","New Review Added!")
     res.redirect(`/Listings/${listing._id}`);
 }));
 
@@ -35,6 +36,7 @@ router.delete("/:reviewId",wrapAsync(async(req,res)=>{
    await Listing.findByIdAndUpdate(id,{$pull: {reviews : reviewId}});
    //we've used pull operator of Mongodb.So, we've passed our id then from reviews array any id get matched with our passed id we'll pull it and remove it.
    await Review.findByIdAndDelete(reviewId);//by pulling our reviewId here we'll delete it
+   req.flash("success","Review Deleted!")
    res.redirect(`/Listings/${id}`);
 }));
 

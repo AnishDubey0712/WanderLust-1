@@ -40,6 +40,11 @@ router.get("/",wrapAsync(async (req,res)=>{
         let {id} = req.params; // here we got id now we find data by using id
         const listing = await Listing.findById(id).populate("reviews");// here listing is object which is finding From Listing DB schema
        //To get data along with object id we use populate method
+       if(!listing){
+        //This is if we search deleted listing again by its id then it will flash this message
+        req.flash("error","Listing does not exist!");
+        res.redirect("/Listings");
+       }
         res.render("listings/show.ejs",{listing});
     }));
     
@@ -48,7 +53,7 @@ router.get("/",wrapAsync(async (req,res)=>{
         //Here we've converted JS object to our new Listing and so it will add as new Listing into Db
          const newlisting =  new Listing (req.body.listing) ;
          await newlisting.save(); // here we'll save our newlisting data in db
-        req.flash("success","New Listing Created!")
+        req.flash("success","New Listing Created!");
          res.redirect("/Listings");
     }));
 
@@ -58,6 +63,11 @@ router.get("/:id/edit",wrapAsync( async(req,res)=>{
     const listing = await Listing.findById(id);
     // console.log("Listing Object:", listing);
 // here listing is object which is finding From Listing DB schema
+if(!listing){
+    //This is if we search deleted listing again by its id then it will flash this message
+    req.flash("error","Listing does not exist!");
+    res.redirect("/Listings");
+   }
 res.render("listings/edit.ejs",{ listing });
 //we'll get our id from req and then we'll find that particular listing by id and then pass it to edit.ejs
 }));
@@ -66,13 +76,15 @@ res.render("listings/edit.ejs",{ listing });
 router.put("/:id",validateListing,wrapAsync(async (req,res)=>{
     let {id}= req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing}) //req.body.listing is our JS object in which there are all parameters and we'll deconstruct it and we'll convert them into individual value and pass it in new updated value
-  res.redirect("/Listings");
+    req.flash("success","Listing Updated!")
+    res.redirect(`/Listings/${id}`);
 }));
 // Delete Route 
 router.delete("/:id", wrapAsync(async (req,res)=>{
     let {id}= req.params;
     let dltListing = await Listing.findByIdAndDelete(id);//We will first find our listing by id and then delete it.
- res.redirect("/Listings");
+    req.flash("success"," Listing Deleted!")
+    res.redirect("/Listings");
 }));
 
 

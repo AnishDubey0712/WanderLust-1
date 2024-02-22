@@ -66,6 +66,7 @@ app.use(flash());
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");//Whenever we get success message then we'll call next
     //And we're gonna use this success variable in our index.ejs cuz its redirecting to listings
+    res.locals.error=req.flash("error")
     next();
 });
 app.use("/Listings",listings)
