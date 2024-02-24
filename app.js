@@ -5,14 +5,16 @@ const path = require("path")//setting up ejs
 const methodOverride = require("method-override");//for converting post req into put for updation
 const ejsMate = require("ejs-mate");//its used to keep things common in webpages
 const ExpressError = require("./utils/ExpressError.js");
-const listings = require("./routes/listing.js"); //required our listing.js in which er are using router
-const reviews = require("./routes/review.js");
+const listingsRouter = require("./routes/listing.js"); //required our listing.js in which er are using router
+const reviewsRouter = require("./routes/review.js");
+const userRouter= require("./routes/user.js");//User Login & singnup route
 const session = require("express-session");//To make session_id for client
 const flash = require("connect-flash");//To flash messages
 //User authentication
 const passport = require("passport");
 const LocalStratergy = require("passport-local");
 const User = require("./models/user.js");
+
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views")); // for ejs
 app.use(express.urlencoded({extended:true}));// for Data parsing
@@ -80,8 +82,9 @@ app.use((req,res,next)=>{
     res.locals.error=req.flash("error")
     next();
 });
-app.use("/Listings",listings)
-app.use("/Listings/:id/reviews",reviews);
+app.use("/Listings",listingsRouter)
+app.use("/Listings/:id/reviews",reviewsRouter);
+app.use("/",userRouter);
 
 
 
