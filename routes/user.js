@@ -15,7 +15,7 @@ router.post("/signup",wrapAsync (async (req,res)=>{
      let {username,email,password}=req.body;//We'll get all details from user input body
 const newUser =  new User({email,username}); // we'll make new user in db
 const registerUser = await User.register(newUser,password); //By register method we'll reg it to db
-req.flash("success","Welcome to WanderLust");
+req.flash("success","Welcome to WanderLust"+newUser.username);
 res.redirect("/Listings")
 }
 catch(err){
@@ -35,8 +35,8 @@ router.get("/login",(req,res)=>{
 //And if login fails we'll redirect to login page again
 router.post("/login",passport.authenticate("local",{failureRedirect: '/login',failureFlash: true}),
 async (req,res)=>{
-    let username
-req.flash("success","Welcome Back");
+  
+req.flash("success",`Welcome Back`);
 res.redirect("/Listings");
 })
 
