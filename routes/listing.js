@@ -5,6 +5,7 @@ const wrapAsync = require("../utils/wrapAsync.js");//for err handling and easy w
 const ExpressError = require("../utils/ExpressError.js");
 const {ListingSchema} = require("../schema.js");//both are required Listing & Review Schema
 const Listing = require("../models/listing.js");
+const {isLoggedIn}=require("../middleware.js");//required to pass as middleware in func.
 
 
 // validateListing, 
@@ -27,11 +28,11 @@ const validateListing = (req,res,next)=>{
 //Index route
 router.get("/",wrapAsync(async (req,res)=>{
     const allListings = await Listing.find({});
-       res.render("listings/index.ejs",{allListings})
+      return res.render("listings/index.ejs",{allListings})
     }));
     
     //New Route (get req for new listings then it send post req from new.ejs  )
-    router.get("/new",(req,res)=>{
+    router.get("/new",isLoggedIn,(req,res)=>{
         res.render("listings/new.ejs");
     })
     
@@ -49,7 +50,7 @@ router.get("/",wrapAsync(async (req,res)=>{
     }));
     
     //Create Route (Post req for new listings)
-    router.post("/",validateListing,wrapAsync(async(req,res,next)=>{
+    router.post("/",isLoggedIn,validateListing,wrapAsync(async(req,res,next)=>{
         //Here we've converted JS object to our new Listing and so it will add as new Listing into Db
          const newlisting =  new Listing (req.body.listing) ;
          await newlisting.save(); // here we'll save our newlisting data in db
@@ -58,7 +59,7 @@ router.get("/",wrapAsync(async (req,res)=>{
     }));
 
     //Edit Route
-router.get("/:id/edit",wrapAsync( async(req,res)=>{
+router.get("/:id/edit",isLoggedIn,wrapAsync( async(req,res)=>{
     let {id} = req.params; // here we got id now we find data by using id
     const listing = await Listing.findById(id);
     // console.log("Listing Object:", listing);
@@ -73,14 +74,14 @@ res.render("listings/edit.ejs",{ listing });
 }));
 
 //Update Route
-router.put("/:id",validateListing,wrapAsync(async (req,res)=>{
+router.put("/:id",isLoggedIn,validateListing,wrapAsync(async (req,res)=>{
     let {id}= req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing}) //req.body.listing is our JS object in which there are all parameters and we'll deconstruct it and we'll convert them into individual value and pass it in new updated value
     req.flash("success","Listing Updated!")
     res.redirect(`/Listings/${id}`);
 }));
 // Delete Route 
-router.delete("/:id", wrapAsync(async (req,res)=>{
+router.delete("/:id",isLoggedIn, wrapAsync(async (req,res)=>{
     let {id}= req.params;
     let dltListing = await Listing.findByIdAndDelete(id);//We will first find our listing by id and then delete it.
     req.flash("success"," Listing Deleted!")

@@ -35,9 +35,17 @@ router.get("/login",(req,res)=>{
 //And if login fails we'll redirect to login page again
 router.post("/login",passport.authenticate("local",{failureRedirect: '/login',failureFlash: true}),
 async (req,res)=>{
-  
-req.flash("success",`Welcome Back`);
+  req.flash("success",`Welcome Back`);
 res.redirect("/Listings");
+});
+router.get("/logout",(req,res)=>{
+    req.logOut((err)=>{
+        if(err){
+            return next(err);
+    }
+    req.flash("success","You are successfully logged out!")
+    res.redirect("/Listings")
+})
 })
 
 
