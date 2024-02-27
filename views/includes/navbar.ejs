@@ -14,7 +14,18 @@
           <a class="nav-link"  href="/Listings">Home</a>
           <a class="nav-link" href="/Listings">All Listings</a>
           <a class="nav-link" href="/Listings/new">Add new listing</a>
-        
+        </div>
+        <div class="navbar-nav ms-auto">
+<!-- In app.js in that We've made a currUser which will store details of user and then we've accessed it here -->
+          <%if(!currUser){%>
+            <!-- If currUser is not done login or singup then we'll show him this Signup and login icons -->
+          <a class="nav-link"  href="/signup">Signup</a>
+          <a class="nav-link" href="/Login">Login</a>
+        <%}%>
+        <!-- If user is already logged in then we'll show him only logout icon -->
+        <%if(currUser){%>
+          <a class="nav-link" href="/Logout">Logout</a>
+          <%}%>
         </div>
       </div>
     </div>
