@@ -89,7 +89,7 @@ min-height: 100vh !important;
 height: 30vh;
 
 }
-.btns-class {
+.btns {
     display: flex;
 }
 .custom-edit-btn {

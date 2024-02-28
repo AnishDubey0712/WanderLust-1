@@ -55,6 +55,7 @@ router.get("/",wrapAsync(async (req,res)=>{
     router.post("/",isLoggedIn,validateListing,wrapAsync(async(req,res,next)=>{
         //Here we've converted JS object to our new Listing and so it will add as new Listing into Db
          const newlisting =  new Listing (req.body.listing) ;
+         console.log(req.user)
          newlisting.owner = req.user._id;
          await newlisting.save(); // here we'll save our newlisting data in db
         req.flash("success","New Listing Created!");

@@ -44,8 +44,10 @@ router.get("/login",(req,res)=>{
 router.post("/login",saveRedirectUrl,passport.authenticate("local",{failureRedirect: '/login',failureFlash: true}),
 async (req,res)=>{
     const clientName = req.user.username; // By this we'll get username from req and then we can pass it with flash
-  req.flash("success",`Welcome Back ${clientName}`);
-res.redirect(res.locals.redirectUrl);
+
+    req.flash("success",`Welcome Back ${clientName}`);
+    let redirectUrl = res.locals.redirectUrl || "/Listings";//If redirectUrl is saved url path then we'll use it otherwise if redirectUrl is undefined then we'll redirect to listings page
+res.redirect(redirectUrl);//req.session
 });
 router.get("/logout",(req,res)=>{
     req.logOut((err)=>{
