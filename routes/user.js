@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 const User= require("../models/user.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const passport =  require("passport")
+const passport =  require("passport");
+const {saveRedirectUrl}=require("../middleware.js")
 
 //SignUp Route
 router.get("/signup",(req,res)=>{
@@ -21,7 +22,7 @@ req.login(registerUser,(err)=>{
         next(err);
     }
     req.flash("success","Welcome to WanderLust");
-res.redirect("/Listings");
+res.redirect(res.locals.redirectUrl);
 })
 }
 catch(err){
@@ -40,11 +41,11 @@ router.get("/login",(req,res)=>{
 //all this authentication work will do our passport middleware
 //in this authenticate middleware 1st we pass our Stratergy so we've used local stratergy 
 //And if login fails we'll redirect to login page again
-router.post("/login",passport.authenticate("local",{failureRedirect: '/login',failureFlash: true}),
+router.post("/login",saveRedirectUrl,passport.authenticate("local",{failureRedirect: '/login',failureFlash: true}),
 async (req,res)=>{
     const clientName = req.user.username; // By this we'll get username from req and then we can pass it with flash
   req.flash("success",`Welcome Back ${clientName}`);
-res.redirect("/Listings");
+res.redirect(res.locals.redirectUrl);
 });
 router.get("/logout",(req,res)=>{
     req.logOut((err)=>{

@@ -39,13 +39,15 @@ router.get("/",wrapAsync(async (req,res)=>{
     // Show Route
     router.get("/:id",wrapAsync(async (req,res)=>{
         let {id} = req.params; // here we got id now we find data by using id
-        const listing = await Listing.findById(id).populate("reviews");// here listing is object which is finding From Listing DB schema
-       //To get data along with object id we use populate method
+        const listing = await Listing.findById(id).populate("reviews").populate("owner");
+        // here listing is object which is finding From Listing DB schema
+       //To get data along with object id we use populate method and we'll get all reviews info and our owner 
        if(!listing){
         //This is if we search deleted listing again by its id then it will flash this message
         req.flash("error","Listing does not exist!");
         res.redirect("/Listings");
        }
+    //    console.log(listing)
         res.render("listings/show.ejs",{listing});
     }));
     
@@ -53,6 +55,7 @@ router.get("/",wrapAsync(async (req,res)=>{
     router.post("/",isLoggedIn,validateListing,wrapAsync(async(req,res,next)=>{
         //Here we've converted JS object to our new Listing and so it will add as new Listing into Db
          const newlisting =  new Listing (req.body.listing) ;
+         newlisting.owner = req.user._id;
          await newlisting.save(); // here we'll save our newlisting data in db
         req.flash("success","New Listing Created!");
          res.redirect("/Listings");

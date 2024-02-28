@@ -8,14 +8,16 @@ const listingSchema=new Schema({
     description : String,
     //For image we'll use ternary operator so if user will input url then we'll use his url otherwise we set our default url for that data.
     image: {
-        type: String,
-        default:
-          "https://images.unsplash.com/photo-1625505826533-5c80aca7d157?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGdvYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
-        set: (v) =>
-          v === ""
-            ? "https://images.unsplash.com/photo-1625505826533-5c80aca7d157?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGdvYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
-            : v,
-      },
+      type: String,
+      default:
+        "https://images.unsplash.com/photo-1625505826533-5c80aca7d157?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGdvYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
+      set: (v) =>
+        typeof v === "object" && v.url // Check if v is an object and it has a 'url' property
+          ? v.url
+          : v === "" // If v is not an object with a 'url' property, use the default URL
+          ? "https://images.unsplash.com/photo-1625505826533-5c80aca7d157?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGdvYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
+          : v,
+    },
     
     price: Number,
     location : String,
@@ -25,7 +27,11 @@ const listingSchema=new Schema({
         type : Schema.Types.ObjectId, //All reviews to our perticular hotel and thier objectId will get stored in this array
         ref : "Review" //we will use review model as ref.
       }
-    ]
+    ],
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref : "User",
+    }
 });
 //This post middleware will call after delete reviews will get called
 listingSchema.post("findOneAndDelete",async(Listing)=>{
