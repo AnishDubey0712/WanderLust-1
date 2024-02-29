@@ -3,17 +3,18 @@ const express = require("express");
 const router = express.Router({mergeParams : true});//for merging parameter from parent to this so we will get proper id for anything
 const wrapAsync = require("../utils/wrapAsync.js");//for err handling and easy way to write try&catch
 const ExpressError = require("../utils/ExpressError.js");
-const {validateReview} =  require("../middleware.js")
+const {validateReview, isLoggedIn} =  require("../middleware.js")
 const Review = require("../models/review.js");
 const Listing = require("../models/listing.js");
 
 
 
 //Reviews Route(Post route)
-router.post("/",validateReview,wrapAsync(async(req,res)=>{
+router.post("/",isLoggedIn,validateReview,wrapAsync(async(req,res)=>{
     //Here both are used validateReview for review err handling and wrapAsync for basic err handling
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);// we take review from req body and add it as new review in schema model
+    newReview.author = req.user._id;//If user is logged in then he will be our author and then we'll push author in review 
     listing.reviews.push(newReview); // ad we will push that into our reviews model
     await newReview.save();//we will save it to our db
     await listing.save(); 
