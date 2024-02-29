@@ -2,10 +2,8 @@
 const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");//for err handling and easy way to write try&catch
-const ExpressError = require("../utils/ExpressError.js");
-const {ListingSchema} = require("../schema.js");//both are required Listing & Review Schema
 const Listing = require("../models/listing.js");
-const {isLoggedIn}=require("../middleware.js");//required to pass as middleware in func.
+const {isLoggedIn, isOwner,validateListing}=require("../middleware.js");//required to pass as middleware in func.
 
 
 // validateListing, 
@@ -14,15 +12,6 @@ const {isLoggedIn}=require("../middleware.js");//required to pass as middleware 
 // Otherwise, it allows the request to proceed to the next middleware or route handler.
 //Basically , one middleware for create and update api routes
 
-const validateListing = (req,res,next)=>{
-    let {error} = ListingSchema.validate(req.body);//validating joi and checking all parameters
-  if(error){
-      throw new ExpressError(404,error);// express error will send new error according to what we have mentioned in our expresserror.js file
-  }
-  else{
-      next(); // If there is no error detected then will call next function
-  }
-}
 
 
 //Index route
@@ -63,7 +52,7 @@ router.get("/",wrapAsync(async (req,res)=>{
     }));
 
     //Edit Route
-router.get("/:id/edit",isLoggedIn,wrapAsync( async(req,res)=>{
+router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync( async(req,res)=>{
     let {id} = req.params; // here we got id now we find data by using id
     const listing = await Listing.findById(id);
     // console.log("Listing Object:", listing);
@@ -78,14 +67,15 @@ res.render("listings/edit.ejs",{ listing });
 }));
 
 //Update Route
-router.put("/:id",isLoggedIn,validateListing,wrapAsync(async (req,res)=>{
+router.put("/:id",isLoggedIn,isOwner,validateListing,wrapAsync(async (req,res)=>{
     let {id}= req.params;
-    await Listing.findByIdAndUpdate(id,{...req.body.listing}) //req.body.listing is our JS object in which there are all parameters and we'll deconstruct it and we'll convert them into individual value and pass it in new updated value
+    await Listing.findByIdAndUpdate(id,{...req.body.listing}) 
+    //req.body.listing is our JS object in which there are all parameters and we'll deconstruct it and we'll convert them into individual value and pass it in new updated value
     req.flash("success","Listing Updated!")
     res.redirect(`/Listings/${id}`);
 }));
 // Delete Route 
-router.delete("/:id",isLoggedIn, wrapAsync(async (req,res)=>{
+router.delete("/:id",isLoggedIn,isOwner ,wrapAsync(async (req,res)=>{
     let {id}= req.params;
     let dltListing = await Listing.findByIdAndDelete(id);//We will first find our listing by id and then delete it.
     req.flash("success"," Listing Deleted!")

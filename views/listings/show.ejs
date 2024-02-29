@@ -22,7 +22,7 @@
 <!--here we've written code for $ symbol and toLocaleString is for converitng price into string and then add commas. -->
 <!-- If current user.id = owner then only he will get access to edit or delete   -->
 <!-- We are comparing currUser to owner id if both matches then curruser will get access to edit & delete btn -->
-<%if(currUser && currUser._id.equals(listing.owner._id)){%>
+
 <div class="btns">
         <a href="/Listings/<%=listing._id%>/edit" class="btn btn-dark col-1 offset-3 edit-btn ">Edit</a>
         
@@ -30,7 +30,6 @@
   <button class="btn btn-dark offset-5">Delete</button>
 </form>
 </div>
-<%}%>
 <div class="col-8 offset-3 mb-3">
     <hr>
     <h4>Leave a Review</h4>

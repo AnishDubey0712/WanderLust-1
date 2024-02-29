@@ -3,20 +3,11 @@ const express = require("express");
 const router = express.Router({mergeParams : true});//for merging parameter from parent to this so we will get proper id for anything
 const wrapAsync = require("../utils/wrapAsync.js");//for err handling and easy way to write try&catch
 const ExpressError = require("../utils/ExpressError.js");
-const {reviewSchema} = require("../schema.js");//both are required Listing & Review Schema
+const {validateReview} =  require("../middleware.js")
 const Review = require("../models/review.js");
 const Listing = require("../models/listing.js");
 
-//For review Error handling
-const validateReview = (req,res,next)=>{
-    let {error} = reviewSchema.validate(req.body);//validating joi and checking all parameters
-  if(error){
-      throw new ExpressError(404,error);// express error will send new error according to what we have mentioned in our expresserror.js file
-  }
-  else{
-      next(); // If there is no error detected then will call next function
-  }
-}
+
 
 //Reviews Route(Post route)
 router.post("/",validateReview,wrapAsync(async(req,res)=>{
