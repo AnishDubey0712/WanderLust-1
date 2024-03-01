@@ -2,6 +2,7 @@
 //isAuthenticated is an passport method by automatically we can check if user is logged in or not
 //If user is logged in then only he can do changes or create new listings
 const Listing = require("./models/listing.js");
+const Review = require("./models/review.js");
 const ExpressError = require("./utils/ExpressError.js");
 const {ListingSchema,reviewSchema} = require("./schema.js");//both are required Listing & Review Schema
 
@@ -51,4 +52,15 @@ module.exports. validateReview = (req,res,next)=>{
   else{
       next(); // If there is no error detected then will call next function
   }
-}
+};
+//Middleware for checking currUser is equal to Author of review or not
+module.exports.isReviewAuthor = async(req,res,next)=>{
+    let {id,reviewId}= req.params; //we'll check id & reviewId first
+    let review = await Review.findById(reviewId); // then we'll find that id & search it in db
+    if(! review.author.equals(res.locals.currUser._id)){
+        //if author is not equal to current user then he cannot delete the listings
+        req.flash("error","You are not author of this review!");
+        return res.redirect(`/Listings/${id}`);
+    }
+    next();
+};

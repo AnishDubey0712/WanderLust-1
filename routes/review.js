@@ -3,8 +3,8 @@ const express = require("express");
 const router = express.Router({mergeParams : true});//for merging parameter from parent to this so we will get proper id for anything
 const wrapAsync = require("../utils/wrapAsync.js");//for err handling and easy way to write try&catch
 const ExpressError = require("../utils/ExpressError.js");
-const {validateReview, isLoggedIn} =  require("../middleware.js")
-const Review = require("../models/review.js");
+const {validateReview, isLoggedIn, isReviewAuthor} =  require("../middleware.js")
+const Review = require("../models/review");
 const Listing = require("../models/listing.js");
 
 
@@ -23,7 +23,7 @@ router.post("/",isLoggedIn,validateReview,wrapAsync(async(req,res)=>{
 }));
 
 //Delete Reviews Route
-router.delete("/:reviewId",wrapAsync(async(req,res)=>{
+router.delete("/:reviewId",isLoggedIn,isReviewAuthor,wrapAsync(async(req,res)=>{
    let{id , reviewId} = req.params;
    await Listing.findByIdAndUpdate(id,{$pull: {reviews : reviewId}});
    //we've used pull operator of Mongodb.So, we've passed our id then from reviews array any id get matched with our passed id we'll pull it and remove it.
