@@ -28,7 +28,9 @@ router.get("/",wrapAsync(async (req,res)=>{
     // Show Route
     router.get("/:id",wrapAsync(async (req,res)=>{
         let {id} = req.params; // here we got id now we find data by using id
-        const listing = await Listing.findById(id).populate("reviews").populate("owner");
+        const listing = await Listing.findById(id)
+        .populate({path : "reviews",populate:{path : "author",},})//Here is populate nesting for every review we'll populate its author
+        .populate("owner");
         // here listing is object which is finding From Listing DB schema
        //To get data along with object id we use populate method and we'll get all reviews info and our owner 
        if(!listing){
