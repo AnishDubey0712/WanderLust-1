@@ -22,6 +22,7 @@ if(req.session.redirectUrl){ //If url saved in session then we'll save it to loc
 };
 next();
 };
+
 //Middleware for checking currUser is equal to owner or not
 module.exports.isOwner = async(req,res,next)=>{
     let {id}= req.params;
@@ -34,6 +35,11 @@ module.exports.isOwner = async(req,res,next)=>{
     next();
 };
 //Listing validation
+// validateListing, 
+//this middleware ensures that the data received in the request body conforms to the expected structure and validation rules defined by the ListingSchema. 
+//If there's an error, it halts further processing and sends an appropriate error response.
+// Otherwise, it allows the request to proceed to the next middleware or route handler.
+//Basically , one middleware for create and update api routes
  module.exports.validateListing = (req,res,next)=>{
     let {error} = ListingSchema.validate(req.body);//validating joi and checking all parameters
   if(error){
@@ -43,6 +49,7 @@ module.exports.isOwner = async(req,res,next)=>{
       next(); // If there is no error detected then will call next function
   }
 };
+
 //Review validation.For review Error handling
 module.exports. validateReview = (req,res,next)=>{
     let {error} = reviewSchema.validate(req.body);//validating joi and checking all parameters
@@ -53,6 +60,7 @@ module.exports. validateReview = (req,res,next)=>{
       next(); // If there is no error detected then will call next function
   }
 };
+
 //Middleware for checking currUser is equal to Author of review or not
 module.exports.isReviewAuthor = async(req,res,next)=>{
     let {id,reviewId}= req.params; //we'll check id & reviewId first
