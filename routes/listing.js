@@ -15,10 +15,7 @@ const {isLoggedIn, isOwner,validateListing}=require("../middleware.js");//requir
 
 
 //Index route
-router.get("/",wrapAsync(async (req,res)=>{
-    const allListings = await Listing.find({});
-      return res.render("listings/index.ejs",{allListings})
-    }));
+router.get("/",wrapAsync());
     
     //New Route (get req for new listings then it send post req from new.ejs  )
     router.get("/new",isLoggedIn,(req,res)=>{
