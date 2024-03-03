@@ -28,10 +28,13 @@ module.exports.index= async (req,res)=>{
 
     //Create Route
     module.exports.createListing = async(req,res,next)=>{
+        let url = req.file.path;//we'll take file path from req to pass in db and to cloudinary
+        let filename = req.path.filename;//And filename
+        
         //Here we've converted JS object to our new Listing and so it will add as new Listing into Db
          const newlisting =  new Listing (req.body.listing) ;
-         console.log(req.user)
          newlisting.owner = req.user._id;
+         newlisting.image = {url,filename}; //We'll add url & filename in newListing
          await newlisting.save(); // here we'll save our newlisting data in db
         req.flash("success","New Listing Created!");
          res.redirect("/Listings");

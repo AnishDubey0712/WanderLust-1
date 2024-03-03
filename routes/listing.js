@@ -6,8 +6,9 @@ const Listing = require("../models/listing.js");
 const {isLoggedIn, isOwner,validateListing}=require("../middleware.js");//required to pass as middleware in func.
 const listingController = require("../controllers/listings.js");
 const multer = require("multer"); //Multer is middleware npm package used to handle multipart/form-data
-const upload = multer({dest: 'uploads/'});//Multer will get data(file) & automatically make upload folder & save files
-//But later we'll use 3rd party cloud service to upload these files
+const {storage} = require("../cloudConfig.js"); //Storage required from cloudconfig file
+const upload = multer({storage});//Multer will get data(file) & automatically make upload folder & save files
+//Multer will store file to our cloudinary storage
 //Index route
 router.get("/",wrapAsync(listingController.index));//this index is defined in controllers/listings.js
     
@@ -19,9 +20,7 @@ router.get("/",wrapAsync(listingController.index));//this index is defined in co
     
     //Create Route (Post req for new listings)
     // router.post("/",isLoggedIn,validateListing,wrapAsync(listingController.createListing));
-    router.post("/",upload.single('listing[image]'),(req,res)=>{
-        res.send(req.file);
-    })
+    router.post("/",isLoggedIn,upload.single('listing[image]'),validateListing,wrapAsync(listingController.createListing))
 
     //Edit Route
 router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.editListing));
