@@ -5,7 +5,11 @@
     <div class="col-8 offset-2"> 
     <h3>Create New Listing</h3>
     <!-- here we've used bootstrap form overview and made separate div for sections and mb-3 is bootstrap class for spacing -->
-    <form action="/Listings" method="post" novalidate class="needs-validation">
+    <form action="/Listings"
+     method="post" 
+    novalidate class="needs-validation"
+     enctype="multipart/form-data">
+     <!-- multipart/form-data is used to send files instead of url -->
         <div class="mb-3">  
             <label for="title"class="form-label">Title</label>
    <input type="text" 
@@ -25,11 +29,12 @@
             required></textarea>
             <div class="invalid-feedback">Enter short description</div>
         </div>
-        <div class="mb-3">
-            <label for="image"class="form-label">Image URL</label>
-            <input type="text" name="listing[image]" id="" placeholder="Enter your image url"
-            class="form-control" >
-            </div>
+        
+            <div class="mb-3">
+                <label for="image"class="form-label"> Upload Listing Image </label>
+                <input type="file" name="listing[image]" id=""
+                class="form-control" >
+                </div>
         
  <!-- here we're are making all variable as a key of object [listing] so listing object key will be title,description etc.. -->
  <!-- We've added price and location in row div so they will be in same row till screen is large but after screen goes below medium lvl they will come in one line -->
