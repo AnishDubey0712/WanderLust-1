@@ -5,7 +5,9 @@
     <div class="col-8 offset-2">
     <h3>Edit Listing</h3>
     <form action="/Listings/<%=listing._id%>?_method=PUT" method="post"
-        novalidate class="needs-validation">
+        novalidate 
+        class="needs-validation"
+        enctype="multipart/form-data">
         <div class="mb-3">
             <label for="title"class="form-label">Title</label> 
             <input type="text" name="listing[title]" id="" value="<%=listing.title%>" class="form-control" required>
@@ -21,8 +23,12 @@
  </div>
  
  <div class="mb-3">
-<label for="image"class="form-label">Image URl</label>
-    <input type="text" name="listing[image]" id="" value="<%=listing.image%>"class="form-control">
+<label for="image"class="form-label">Upload New Image</label>
+    <input type="file" 
+    name="listing[image]"
+     id="" 
+     
+     class="form-control">
  </div>
  <!-- Created common div row for price and locationso they will be set accordingly -->
  <div class="row mt-3">

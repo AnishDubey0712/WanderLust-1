@@ -58,8 +58,19 @@ module.exports.index= async (req,res)=>{
     //Update Route
     module.exports.updateListing = async (req,res)=>{
         let {id}= req.params;
-        await Listing.findByIdAndUpdate(id,{...req.body.listing}) 
+        let listing = await Listing.findByIdAndUpdate(id,{...req.body.listing}) 
         //req.body.listing is our JS object in which there are all parameters and we'll deconstruct it and we'll convert them into individual value and pass it in new updated value
+        if(typeof req.file !== "undefined"){
+        let url = req.file.path;//we'll take file path from req to pass in db and to cloudinary
+        let filename = req.path.filename;//And filename
+        listing.image = { url , filename }; //We'll save url & filename in listing. This will complete new url&filename
+        await listing.save();
+    }
+        //here if condition is for if someone does not done any updation in listing 
+        //then no file will be passed towards backend and  our url path will be empty
+        //so to encounter that prob we will put code in if statement that if file exist in req  
+        //if file is not uploaded by user then we will get undefined to check undefined parameter in js
+        //we use typeof operator in js. So, if req.file matches with undefined then we will not save updations
         req.flash("success","Listing Updated!")
         res.redirect(`/Listings/${id}`);
     };
