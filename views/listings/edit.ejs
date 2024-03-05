@@ -21,13 +21,15 @@
         <%=listing.description%> </textarea>
     <div class="invalid-feedback">Please enter a valid title!</div>
  </div>
- 
+ <div class="mb-3">
+    Current Listing Image <br>
+    <img src="<%= originalImageUrl %>"  >
+     </div>
  <div class="mb-3">
 <label for="image"class="form-label">Upload New Image</label>
     <input type="file" 
     name="listing[image]"
      id="" 
-     
      class="form-control">
  </div>
  <!-- Created common div row for price and locationso they will be set accordingly -->

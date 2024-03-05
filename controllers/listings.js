@@ -51,7 +51,10 @@ module.exports.index= async (req,res)=>{
         req.flash("error","Listing does not exist!");
         res.redirect("/Listings");
        }
-    res.render("listings/edit.ejs",{ listing });
+       let originalImageUrl = listing.image.url;
+     originalImageUrl = originalImageUrl.replace("/upload","/upload/w_250"); //We are replacing details
+       //in our url after /upload we are replacing h_300,w_250 this are parameters from cloudinary Image transform   
+    res.render("listings/edit.ejs",{ listing , originalImageUrl });
     //we'll get our id from req and then we'll find that particular listing by id and then pass it to edit.ejs
     };
 
