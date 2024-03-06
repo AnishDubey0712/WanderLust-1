@@ -3,7 +3,7 @@
     <!-- border-bottom is bootstrap class for getting border at bottom of our navbar
     Sticky-top is bootstrap class which can set our navbar on top when we scroll -->
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"><i class="fa-solid fa-person-walking-luggage"></i></a>
+      <a class="navbar-brand" href="/Listings"><i class="fa-solid fa-person-walking-luggage"></i></a>
       <button class="navbar-toggler" type="button" 
       data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
       
@@ -11,11 +11,12 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a class="nav-link"  href="/Listings">Home</a>
-          <a class="nav-link" href="/Listings">All Listings</a>
-          <a class="nav-link" href="/Listings/new">Add new listing</a>
+          
+          <a class="nav-link" href="/Listings">Explore</a>
+          
         </div>
         <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="/Listings/new">Add new listing</a>
 <!-- In app.js in that We've made a currUser which will store details of user and then we've accessed it here -->
           <%if(!currUser){%>
             <!-- If currUser is not done login or singup then we'll show him this Signup and login icons -->
