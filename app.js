@@ -66,10 +66,10 @@ const validateReview = (req,res,next)=>{
 }
 
 // Define a route handler for the root URL
-app.get("/", (req, res) => {
-    // Redirect to the Listings page or any other page you want
-    res.redirect("/Listings");
-});
+// app.get("/", (req, res) => {
+//     // Redirect to the Listings page or any other page you want
+//     res.redirect("/Listings");
+// });
 //We have to use both flash and session before our api routes
 app.use(session(sessionOptions));
 app.use(flash());

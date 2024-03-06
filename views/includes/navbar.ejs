@@ -16,12 +16,12 @@
           
         </div>
         <div class="navbar-nav ms-auto">
-          <a class="nav-link" href="/Listings/new">Add new listing</a>
+          <a class="nav-link" href="/Listings/new">Airbnb your home</a>
 <!-- In app.js in that We've made a currUser which will store details of user and then we've accessed it here -->
           <%if(!currUser){%>
             <!-- If currUser is not done login or singup then we'll show him this Signup and login icons -->
-          <a class="nav-link"  href="/signup">Signup</a>
-          <a class="nav-link" href="/Login">Login</a>
+          <a class="nav-link"  href="/signup"><b>Signup</b></a>
+          <a class="nav-link" href="/Login"><b>Login</b></a>
         <%}%>
         <!-- If user is already logged in then we'll show him only logout icon -->
         <%if(currUser){%>
