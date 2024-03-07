@@ -9,13 +9,16 @@
     }
     .filter {
       text-align: center;
-      margin-right: 2rem;
+      margin-right: 4rem;
       margin-top: 2rem;
       opacity: 0.5;
     }
     .filter:hover {
 opacity: 1;
 cursor: pointer;
+    }
+    .filter p {
+      font-size: 0.8rem;
     }
    </style>
     <div id="filters">
@@ -27,6 +30,38 @@ cursor: pointer;
         <div><i class="fa-solid fa-bed fi"></i></div>
         <p>Rooms</p>
        </div>
+       <div class="filter">
+         <div><i class="fa-solid fa-umbrella-beach fi"></i></div>
+         <p>Beach</p>
+        </div>
+        <div class="filter">
+          <div> <i class="fa-solid fa-snowflake fi"></i></div>
+          <p>Arctic</p>
+         </div>
+         <div class="filter">
+           <div><i class="fa-solid fa-person-swimming fi"></i></div>
+           <p>Swimming Pool</p>
+          </div>
+          <div class="filter">
+           <div> <i class="fa-solid fa-tents fi"></i></div>
+           <p>Camping</p>
+          </div>
+          <div class="filter">
+            <div><i class="fa-solid fa-mountain-city fi"></i></div>
+            <p>Hill-Station</p>
+           </div>
+           <div class="filter">
+            <div> <i class="fa-solid fa-wine-glass fi"></i></div>
+            <p>Vineyards</p>
+           </div>
+           <div class="filter">
+            <div><i class="fa-solid fa-water fi"></i></div>
+            <p>Lake</p>
+           </div>
+           <div class="filter">
+            <div><i class="fa-solid fa-tree fi"></i></div>
+            <p>National Parks</p>
+           </div>
     </div>
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
       <% for(let Listing of allListings){%>
