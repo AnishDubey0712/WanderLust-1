@@ -22,6 +22,7 @@ router.get("/",wrapAsync(listingController.index));//this index is defined in co
     // router.post("/",isLoggedIn,validateListing,wrapAsync(listingController.createListing));
     router.post("/",isLoggedIn,upload.single('listing[image]'),validateListing,wrapAsync(listingController.createListing))
 
+
     //Edit Route
 router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(listingController.editListing));
 

@@ -12,8 +12,12 @@ listing: Joi.object({
     country: Joi.string().required(),
     price: Joi.number().required().min(0),
     image: Joi.string().allow("",null),
-}).required(), //According to joi this object should be required means at every req in that there should be listing object
-}); 
+    category: Joi.string().valid('Rooms', 'Hotels', 'Beach', 'Arctic', 'Swimming Pool', 'Camping', 'Hill-Station', 'Vineyards', 'Lake', 'National Parks').required()
+    }).required()
+});
+// }).required(), //According to joi this object should be required means at every req in that there should be listing object
+
+// }); 
 
 //joi package for review schema
 module.exports.reviewSchema = Joi.object({
@@ -21,4 +25,5 @@ module.exports.reviewSchema = Joi.object({
        rating: Joi.number().required().min(1).max(5),
         comment: Joi.string().required(),
     }).required(),
+    
 });

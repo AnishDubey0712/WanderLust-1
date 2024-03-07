@@ -18,7 +18,7 @@ const flash = require("connect-flash");//To flash messages
 const passport = require("passport");
 const LocalStratergy = require("passport-local");
 const User = require("./models/user.js");
-
+const Listing = require("./models/listing.js");
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views")); // for ejs
 app.use(express.urlencoded({extended:true}));// for Data parsing
@@ -91,6 +91,17 @@ app.use("/Listings",listingsRouter)
 app.use("/Listings/:id/reviews",reviewsRouter);
 app.use("/",userRouter);
 
+app.get("/category/:category", async (req, res, next) => {
+    const category = req.params.category;
+    try {
+        const listings = await Listing.find({ category: category });
+        res.render("listings/category.ejs", { category: category, listings: listings });
+    } catch (error) {
+        console.error("Error rendering category.ejs:", error);
+        next(error); // Forward the error to the error handling middleware
+    }
+    // Rest of your route handler code
+});
 
 
 //We've added wrapSync func to all req so if some error occurs we'll handle it and our server won't get crash

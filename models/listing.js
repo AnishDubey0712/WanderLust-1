@@ -24,6 +24,10 @@ const listingSchema=new Schema({
     owner: {
       type: Schema.Types.ObjectId,
       ref : "User"
+    },
+    category: {
+      type : String,
+      enum : ["Rooms", "Hotels", "Beach", "Arctic", "Swimming Pool", "Camping", "Hill-Station", "Vineyards", "Lake", "National-Parks"]
     }
 });
 //This post middleware will call after delete reviews will get called
