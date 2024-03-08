@@ -6,10 +6,13 @@
     #filters {
       display: flex;
       flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5rem;
     }
     .filter {
       text-align: center;
-      margin-right: 4rem;
+      margin-right: 2rem;
       margin-top: 2rem;
       opacity: 0.5;
     }
@@ -24,6 +27,29 @@ cursor: pointer;
       text-decoration: none;
       color: inherit;
     }
+    @media (max-width: 768px) {
+  /* Adjust styles for smaller screens */
+  .filter {
+    width: 100px; /* Reduce the width of each filter item */
+  }
+
+  .filter div {
+    font-size: 20px; /* Reduce the font size of the icons */
+  }
+}
+.tax-info {
+display: none;
+}
+.tax-switch {
+  border: 1px solid black;
+  border-radius:1rem ;
+  height: 3.25rem;
+  margin-left: 3rem;
+  justify-content: center;
+ padding: 1rem;
+ align-items: center;
+}
+
    </style>
     <div id="filters">
       <div class="filter">
@@ -77,6 +103,12 @@ cursor: pointer;
             <div><i class="fa-solid fa-tree fi"></i></div>
             <p>National Parks</p></a>
            </div>
+           <div class="tax-switch">
+            <div class="form-check-reverse form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Display After Taxes </label>
+            </div>
+           </div>
     </div>
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
       <% for(let Listing of allListings){%>
@@ -89,9 +121,24 @@ cursor: pointer;
   <p class="card-text">
     <b><%=Listing.title%></b> 
     <br>
-    <b>&#8377;<%=Listing.price.toLocaleString("en-IN")%> </b>/night</p>
+    <b>&#8377;<%=Listing.price.toLocaleString("en-IN")%> </b>/night<i class="tax-info">&nbsp;&nbsp;+18%GST</i></p>
           </div>
+          
         </div></a>
         <%}%></div>
-   
+   <script>
+    let taxSwitch = document.getElementById("flexSwitchCheckDefault");//id is of checkbox
+    taxSwitch.addEventListener("click",()=>{
+      let taxinfo = document.getElementsByClassName("tax-info");//tax-info means +18% gst
+      for(info of taxinfo){
+        if(info.style.display != "inline"){
+          info.style.display= "inline"; //When our tax-info class is not inline then we'll change it to inline
+        }
+        else{
+          info.style.display = "none";//if it is inline then we'll change to none. 
+        }
+        //when we'll use tax checkbox if we select checkbox then our tax-info class will be shown when will we turnoff that checkbox text-info will set to none
+      }
+    })
+   </script>
 </body>
