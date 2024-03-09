@@ -1,0 +1,23 @@
+<%layout("/layouts/boilerplate")%>
+<div class="container">
+    <h3>Listings in : <%= Term %></h3>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <% listings.forEach(listing => { %>
+           
+               
+                <a href="/Listings/<%=listing._id%>" class="listing_link">
+                  <div class="card col listing-card" style="width: 18rem;">
+                    <img src="<%=listing.image.url%>" class="card-img-top" alt="listingimage"style="height: 18rem;">
+                    <!-- Below card-img-overlay is for giving a clickable hovering effect to our card using css -->
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
+            <p class="card-text">
+              <b><%=listing.title%></b> 
+              <br>
+              <b>&#8377;<%=listing.price.toLocaleString("en-IN")%> </b>/night</p>
+                    </div>
+                  </div></a>
+                 
+        <% }); %>
+    </div>
+</div>

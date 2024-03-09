@@ -102,6 +102,27 @@ app.get("/category/:category", async (req, res, next) => {
     }
     // Rest of your route handler code
 });
+app.get("/search",async(req,res)=>{
+    try {
+        const Term = req.query.searchTerm; // Assuming the search term is passed as a query parameter named 'term'
+
+        // Perform a case-insensitive search for listings containing the search term
+        const listings = await Listing.find({
+            $or: [
+                { title: { $regex: Term, $options: 'i' } },
+              //  { description: { $regex: Term, $options: 'i' } },
+                { location: { $regex: Term, $options: 'i' } },
+                { country: { $regex: Term, $options: 'i' } }
+            ]
+        });
+
+        // Render an EJS template with the search results
+        res.render("listings/search.ejs", { listings, Term });
+    } catch (err) {
+        console.error('Error searching for listings:', err);
+        res.status(500).send('Internal Server Error');
+    }
+})
 
 
 //We've added wrapSync func to all req so if some error occurs we'll handle it and our server won't get crash
