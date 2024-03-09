@@ -1,4 +1,28 @@
 <!-- navbar will expand on small screens only cuz we've set it to expand-md -->
+<style>
+  .search-btn {
+    background-color: #fe424d;
+    color: #fff;
+    border-radius: 25px;
+    padding: 0 1rem 0 1rem;
+  }
+  .search-btn:hover {
+    background-color: #fe424d;
+    color: #fff;
+  }
+  .search-btn i {
+    color: #fff;
+    display: inline;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+  }
+  .search-input {
+    border-radius: 25px;
+    padding: 0.5rem 3rem 0.5rem 3rem;
+  }
+</style>
+
+
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top"> 
     <!-- border-bottom is bootstrap class for getting border at bottom of our navbar
     Sticky-top is bootstrap class which can set our navbar on top when we scroll -->
@@ -14,6 +38,13 @@
           
           <a class="nav-link" href="/Listings">Explore</a>
           
+        </div>
+        <div class="navbar-nav ms-auto">
+          <form class="d-flex" role="search">
+            <input class="form-control me-2 search-input" type="search" placeholder="Search Destinations" />
+            <button class="btn search-btn" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>Search</button>
+          </form>
         </div>
         <div class="navbar-nav ms-auto">
           <a class="nav-link" href="/Listings/new">Airbnb your home</a>
