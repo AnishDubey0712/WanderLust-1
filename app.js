@@ -102,7 +102,10 @@ app.get("/category/:category", async (req, res, next) => {
     }
     // Rest of your route handler code
 });
-//This route will take req for search bar
+//This route will take req for search bar.
+//We take searchTerm which is name of search bar which will pass user search params and we'll put in Term here
+//And by DB.find we'll find it and use or & regex operator for finding(matching) with listing schema params.
+//Then we'll pass it to ejs file in which user will get thier searched listings. 
 app.get("/search",async(req,res)=>{
     try {
         const Term = req.query.searchTerm; // Assuming the search term is passed as a query parameter named 'term'
