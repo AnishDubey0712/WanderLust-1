@@ -102,6 +102,7 @@ app.get("/category/:category", async (req, res, next) => {
     }
     // Rest of your route handler code
 });
+//This route will take req for search bar
 app.get("/search",async(req,res)=>{
     try {
         const Term = req.query.searchTerm; // Assuming the search term is passed as a query parameter named 'term'
