@@ -92,6 +92,9 @@ app.use("/Listings/:id/reviews",reviewsRouter);
 app.use("/",userRouter);
 
 //This route is for our icons category provided on navbar
+//here we have taken category from our req and then passed to Listing schema and find it
+//when we will get listing based on our category we will render it to nw page in which user will get his searched category listings
+
 app.get("/category/:category", async (req, res, next) => {
     const category = req.params.category;
     try {
