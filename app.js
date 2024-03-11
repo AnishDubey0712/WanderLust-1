@@ -91,6 +91,7 @@ app.use("/Listings",listingsRouter)
 app.use("/Listings/:id/reviews",reviewsRouter);
 app.use("/",userRouter);
 
+//This route is for our icons category provided on navbar
 app.get("/category/:category", async (req, res, next) => {
     const category = req.params.category;
     try {
