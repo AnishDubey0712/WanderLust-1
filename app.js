@@ -13,7 +13,6 @@ const listingsRouter = require("./routes/listing.js"); //required our listing.js
 const reviewsRouter = require("./routes/review.js");
 const userRouter= require("./routes/user.js");//User Login & singnup route
 const session = require("express-session");//To make session_id for client
-const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");//To flash messages
 //User authentication
 const passport = require("passport");
@@ -28,37 +27,9 @@ app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
 
-//By using this it will create mongo store for us
 
-
-app.listen(8080,()=>{
-    console.log("App is Listening");
-});
-
-//const MONGO_URL= "mongodb://127.0.0.1:27017/WanderLust";
-const dbURL = process.env.ATLASDB_URL;//Db is now connected with ATLAS
-main().then(()=>{
-    console.log("Connected to DB");
-}).catch((err)=>{
-    console.log(err);
-});
-async function main(){
-    await mongoose.connect(dbURL);
-};
-//Mongo store
-const store = MongoStore.create({
-    mongoUrl: dbURL,
-    crypto: {
-        secret : process.env.SECRET
-    },
-touchAfter : 24 * 3600, //we refresh it after 24hrs
-});
-store.on("error",()=>{
-    console.log("Error in MONGO_STORE",err)
-})
 const sessionOptions = {
-    store,
-    secret :  process.env.SECRET,
+    secret : "mysupersecretcode",
     resave : false,
     saveUninitialized : true,
     cookie: {
@@ -67,6 +38,22 @@ const sessionOptions = {
         httpOnly: true,
     },
 };
+
+
+app.listen(8080,()=>{
+    console.log("App is Listening");
+});
+
+const MONGO_URL= "mongodb://127.0.0.1:27017/WanderLust";// this is for connecting with DB
+main().then(()=>{
+    console.log("Connected to DB");
+}).catch((err)=>{
+    console.log(err);
+});
+async function main(){
+    await mongoose.connect(MONGO_URL);
+};
+
 //For review Error handling
 const validateReview = (req,res,next)=>{
     let {error} = reviewSchema.validate(req.body);//validating joi and checking all parameters
@@ -106,7 +93,7 @@ app.use("/",userRouter);
 
 //This route is for our icons category provided on navbar
 //here we have taken category from our req and then passed to Listing schema and find it
-//when we will get listing based on our category we will render it to nw page in which user will get his searched category listings
+//when we will get listing based on our category we will render it to nw page in which user will get his searched
 
 app.get("/category/:category", async (req, res, next) => {
     const category = req.params.category;
