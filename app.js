@@ -44,14 +44,15 @@ app.listen(8080,()=>{
     console.log("App is Listening");
 });
 
-const MONGO_URL= "mongodb://127.0.0.1:27017/WanderLust";// this is for connecting with DB
+//const MONGO_URL= "mongodb://127.0.0.1:27017/WanderLust";
+const dbURL = process.env.ATLASDB_URL;//Db is now connected with ATLAS
 main().then(()=>{
     console.log("Connected to DB");
 }).catch((err)=>{
     console.log(err);
 });
 async function main(){
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbURL);
 };
 
 //For review Error handling
