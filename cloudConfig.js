@@ -1,3 +1,4 @@
+//Cloudinary page where all info regarding cloudinary is there.
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
