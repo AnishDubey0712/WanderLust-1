@@ -44,7 +44,7 @@ app.listen(8080,()=>{
     console.log("App is Listening");
 });
 
-const MONGO_URL= "mongodb://127.0.0.1:27017/WanderLust";// this is for connecting with DB
+const MONGO_URL= process.env.ATLASDB_URL;;// this is for connecting with DB
 main().then(()=>{
     console.log("Connected to DB");
 }).catch((err)=>{
