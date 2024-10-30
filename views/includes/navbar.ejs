@@ -20,7 +20,7 @@
     padding: 0.5rem 3rem;
   }
 
-  /* Style the expanded navbar with a solid white background */
+  /* Full-screen white background for expanded navbar */
   .navbar-collapse.show {
     background-color: #fff;
     position: fixed;
@@ -30,18 +30,6 @@
     height: 100vh;
     overflow-y: auto;
     z-index: 1040;
-  }
-
-  /* Overlay for preventing interaction with content behind the navbar */
-  .navbar-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent overlay */
-    z-index: 1035; /* Layer below navbar */
-    display: none;
   }
 </style>
 
@@ -77,30 +65,17 @@
   </div>
 </nav>
 
-<!-- Overlay for disabling interaction with background content -->
-<div class="navbar-menu-overlay"></div>
-
 <script>
   const navbarToggler = document.querySelector('.navbar-toggler');
-  const navbarOverlay = document.querySelector('.navbar-menu-overlay');
   const navbarCollapse = document.querySelector('#navbarNavAltMarkup');
   const body = document.body;
 
-  // Toggle overlay display and body scroll based on navbar collapse state
+  // Toggle body scrolling based on navbar state
   navbarToggler.addEventListener('click', () => {
     if (navbarCollapse.classList.contains('show')) {
-      navbarOverlay.style.display = 'none';
       body.style.overflow = ''; // Enable body scrolling
     } else {
-      navbarOverlay.style.display = 'block';
       body.style.overflow = 'hidden'; // Disable body scrolling
     }
-  });
-
-  // Hide overlay when clicking outside of the navbar menu
-  navbarOverlay.addEventListener('click', () => {
-    navbarCollapse.classList.remove('show');
-    navbarOverlay.style.display = 'none';
-    body.style.overflow = ''; // Re-enable body scrolling
   });
 </script>
